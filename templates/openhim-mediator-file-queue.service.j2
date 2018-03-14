@@ -1,0 +1,14 @@
+[Unit]
+Description=File Queue OpenHIM Mediator
+
+[Service]
+WorkingDirectory=/usr/share/openhim-mediator-file-queue
+ExecStart=/usr/bin/npm start
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=file-queue-mediator
+Environment=NODE_ENV=production {{ 'NODE_TLS_REJECT_UNAUTHORIZED=0 ' if (allow_self_signed) else '' }}
+
+[Install]
+WantedBy=multi-user.target
