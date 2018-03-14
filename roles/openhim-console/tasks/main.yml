@@ -1,0 +1,37 @@
+  - name: creates openhim-console directory
+    file: path=/usr/share/openhim-console state=directory
+    tags: openhim
+
+  - name: download openhim-console
+    get_url:
+      url: https://github.com/jembi/openhim-console/releases/download/{{ openhim_console_version }}/openhim-console-{{ openhim_console_version }}.tar.gz
+      dest: /tmp/openim-console-{{ openhim_console_version }}.tar.gz
+      timeout: 60
+    tags: openhim
+
+  - name: unarchive openhim-console
+    unarchive:
+      src: /tmp/openim-console-{{ openhim_console_version }}.tar.gz
+      dest: /usr/share/openhim-console
+      remote_src: yes
+    tags: openhim
+
+  - name: add repo file for nginx
+    template: src=nginx-repo.j2 dest=/etc/yum.repos.d/nginx.repo
+    tags: openhim
+
+  - name: install nginx
+    yum: name=nginx state=present
+    tags: openhim
+
+  - name: add nginx config
+    template: src=nginx.j2 dest=/etc/nginx/nginx.conf
+    tags: openhim
+
+  - name: run nginx
+    service: name=nginx state=started enabled=yes
+    tags: openhim
+
+  - name: reload nginx to make sure we have latest config
+    service: name=nginx state=reloaded
+    tags: openhim

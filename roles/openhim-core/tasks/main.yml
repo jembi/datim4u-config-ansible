@@ -1,0 +1,43 @@
+  - name: add repo file
+    template: src=mongo-repo.j2 dest=/etc/yum.repos.d/mongodb-org-3.4.repo
+    tags: mongodb
+
+  - name: install mongodb
+    yum: name=mongodb-org state=present
+    tags: mongodb
+
+  - name: run mongodb
+    service: name=mongod state=started enabled=yes
+    tags: mongodb
+
+  - name: get node 8 repo setup script
+    get_url:
+      url: https://rpm.nodesource.com/setup_8.x
+      dest: /tmp/node-setup.sh
+      mode: 0755
+      timeout: 60
+    tags: openhim
+
+  - name: run node 8 repo setup script (only executed on first run)
+    command: /tmp/node-setup.sh
+    args:
+      creates: /tmp/node-setup.sh_already-ran
+    tags: openhim
+
+  - name: install nodejs
+    yum: name=nodejs state=present
+    tags: openhim
+
+  - name: downgrade npm to 4 as git clones fail when run as root under 5.x
+    command: npm i -g npm@4
+    tags: openhim
+
+  - name: install the openhim-core rpm from a remote repo
+    yum:
+      name: https://github.com/jembi/openhim-core-js/releases/download/{{ openhim_core_version }}/openhim-core-{{ openhim_core_version }}.x86_64.rpm
+      state: present
+    tags: openhim
+
+  - name: run openhim-core
+    service: name=openhim-core state=started enabled=yes
+    tags: openhim

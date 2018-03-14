@@ -1,0 +1,42 @@
+  - name: download sync mediator
+    get_url:
+      url: https://github.com/jembi/openhim-mediator-openinfoman-dhis2-sync/archive/{{ sync_mediator_branch_or_tag }}.tar.gz
+      dest: /tmp/sync-mediator.tar.gz
+      timeout: 60
+    tags: sync-mediator
+
+  - name: creates sync mediator directory
+    file: path=/usr/share/openhim-mediator-sync state=directory
+    tags: openhim
+
+  - name: unarchive sync mediator
+    unarchive:
+      src: /tmp/sync-mediator.tar.gz
+      dest: /usr/share/openhim-mediator-sync
+      extra_opts: --strip-components=1
+      remote_src: yes
+    tags: sync-mediator
+
+  - name: add sync mediator config
+    template: src=sync-mediator.conf.j2 dest=/usr/share/openhim-mediator-sync/config/default.json
+    tags: sync-mediator
+
+  - name: install sync mediator dependencies
+    command: npm install chdir=/usr/share/openhim-mediator-sync
+    tags: sync-mediator
+
+  - name: build sync mediator
+    command: npm run prepublish chdir=/usr/share/openhim-mediator-sync
+    tags: sync-mediator
+
+  - name: add sync mediator service
+    template: src=openhim-mediator-sync.service.j2 dest=/etc/systemd/system/openhim-mediator-sync.service
+    tags: sync-mediator
+
+  - name: read new service
+    command: systemctl daemon-reload
+    tags: sync-mediator
+
+  - name: run sync mediator
+    service: name=openhim-mediator-sync state=started enabled=yes
+    tags: sync-mediator

@@ -1,0 +1,42 @@
+  - name: download file-queue mediator
+    get_url:
+      url: https://github.com/jembi/openhim-mediator-file-queue/archive/{{ file_queue_mediator_branch_or_tag }}.tar.gz
+      dest: /tmp/file-queue-mediator.tar.gz
+      timeout: 60
+    tags: file-queue-mediator
+
+  - name: creates file-queue mediator directory
+    file: path=/usr/share/openhim-mediator-file-queue state=directory
+    tags: openhim
+
+  - name: unarchive file-queue mediator
+    unarchive:
+      src: /tmp/file-queue-mediator.tar.gz
+      dest: /usr/share/openhim-mediator-file-queue
+      extra_opts: --strip-components=1
+      remote_src: yes
+    tags: file-queue-mediator
+
+  - name: add file-queue mediator config
+    template: src=file-queue-mediator.conf.j2 dest=/usr/share/openhim-mediator-file-queue/config/config.json
+    tags: file-queue-mediator
+
+  - name: install git for use in npm install
+    yum: name=git state=present
+    tags: file-queue-mediator
+
+  - name: install file-queue mediator dependencies
+    command: npm install chdir=/usr/share/openhim-mediator-file-queue
+    tags: file-queue-mediator
+
+  - name: add file-queue mediator service
+    template: src=openhim-mediator-file-queue.service.j2 dest=/etc/systemd/system/openhim-mediator-file-queue.service
+    tags: file-queue-mediator
+
+  - name: read new service
+    command: systemctl daemon-reload
+    tags: file-queue-mediator
+
+  - name: run file-queue mediator
+    service: name=openhim-mediator-file-queue state=started enabled=yes
+    tags: file-queue-mediator

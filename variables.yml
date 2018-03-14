@@ -1,0 +1,9 @@
+---
+openhim_core_version: v4.0.1
+openhim_console_version: v1.12.0
+sync_mediator_branch_or_tag: master
+datim_mediator_branch_or_tag: master
+file_queue_mediator_branch_or_tag: master
+openhim_root_password: openhim-password
+openhim_mediator_password: mediators-password
+allow_self_signed: true
