@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - debug:
+        msg: "Noop playbook so provisioner is setup, we run ansible ourselves"

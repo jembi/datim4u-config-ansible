@@ -2,10 +2,9 @@
 
 ## To test with vagrant
 
-To set a new test vm
+To set a new test vm, from the test directory run:
 ```
-vagrant up
-./test-with-vagrant.sh
+vagrant up && ./test-with-vagrant.sh
 ```
 
 To start afresh with a new vm
