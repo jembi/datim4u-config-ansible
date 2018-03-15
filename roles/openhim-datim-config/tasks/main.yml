@@ -17,8 +17,6 @@
       mode: 755
     tags: openhim-setup
 
-  - name: load inital data for openhim (only executed on first run)
+  - name: load inital data for openhim
     command: /etc/openhim-setup/load-initial-data.sh
-    args:
-      creates: /etc/openhim-setup/load-initial-data.sh_already-ran
     tags: openhim-setup

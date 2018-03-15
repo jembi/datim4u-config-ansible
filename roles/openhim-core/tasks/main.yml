@@ -18,7 +18,7 @@
       timeout: 60
     tags: openhim
 
-  - name: run node 8 repo setup script (only executed on first run)
+  - name: run node 8 repo setup script
     command: /tmp/node-setup.sh
     args:
       creates: /tmp/node-setup.sh_already-ran
