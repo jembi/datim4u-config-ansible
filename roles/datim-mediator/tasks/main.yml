@@ -18,7 +18,11 @@
     tags: datim-mediator
 
   - name: add datim mediator config
-    template: src=datim-mediator.conf.j2 dest=/usr/share/openhim-mediator-datim/config/config.json
+    template: src=config.json.j2 dest=/usr/share/openhim-mediator-datim/config/config.json
+    tags: datim-mediator
+
+  - name: add datim mediator config
+    template: src=mediator.json.j2 dest=/usr/share/openhim-mediator-datim/config/mediator.json
     tags: datim-mediator
 
   - name: install datim mediator dependencies

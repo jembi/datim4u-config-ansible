@@ -18,7 +18,11 @@
     tags: sync-mediator
 
   - name: add sync mediator config
-    template: src=sync-mediator.conf.j2 dest=/usr/share/openhim-mediator-sync/config/default.json
+    template: src=default.json.j2 dest=/usr/share/openhim-mediator-sync/config/default.json
+    tags: sync-mediator
+  
+  - name: add sync mediator config
+    template: src=mediator.json.j2 dest=/usr/share/openhim-mediator-sync/config/mediator.json
     tags: sync-mediator
 
   - name: install sync mediator dependencies

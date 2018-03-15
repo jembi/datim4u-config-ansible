@@ -14,23 +14,31 @@
   ],
   "Clients": [
     {
-      "certFingerprint": "C1:11:36:8B:54:F8:A2:B4:AA:5B:DD:E8:C1:32:6D:1D:CE:C8:C8:E8",
-      "clientID": "adx-adaptor",
-      "name": "ADX adaptor",
-      "passwordAlgorithm": "sha512",
-      "passwordHash": "f5cd8ee88e2e0a7d9dba920d2b23c5f8d13aa4d61e2f712c6b233386c90374ee18257e1a147da772bf92f73ad14d9977be91466d3bcf2aa3a56a0a83c1c9c0c4",
       "passwordSalt": "af5534debb70d9e05a5c7ab22f19ede9",
+      "passwordHash": "f5cd8ee88e2e0a7d9dba920d2b23c5f8d13aa4d61e2f712c6b233386c90374ee18257e1a147da772bf92f73ad14d9977be91466d3bcf2aa3a56a0a83c1c9c0c4",
+      "passwordAlgorithm": "sha512",
+      "name": "ADX adaptor",
+      "clientID": "adx-adaptor",
+      "certFingerprint": "7C:56:E1:9E:47:ED:4D:BD:D2:6C:81:47:D1:A0:AB:F7:BF:57:A7:4C",
       "roles": [
         "exporter"
       ]
     },
     {
-      "certFingerprint": "1C:65:DB:D4:C4:F4:67:DB:45:D9:DC:85:F2:B1:65:96:BA:E7:3B:8E",
-      "clientID": "openinfoman",
-      "name": "OpenInfoMan",
-      "passwordAlgorithm": "sha512",
-      "passwordHash": "5b72905d61d5b3fe8ca7141fe59ff66870ba53556805d4ce251a0fb96b66791adc24a45db644be08fa85a9568e083be32a182d6ab0b5d1a30991e81a3ad94786",
       "passwordSalt": "82c859c104f99ac85cf92ea90a5c8aa1",
+      "passwordHash": "5b72905d61d5b3fe8ca7141fe59ff66870ba53556805d4ce251a0fb96b66791adc24a45db644be08fa85a9568e083be32a182d6ab0b5d1a30991e81a3ad94786",
+      "passwordAlgorithm": "sha512",
+      "name": "OpenInfoMan",
+      "clientID": "openinfoman",
+      "certFingerprint": "1C:65:DB:D4:C4:F4:67:DB:45:D9:DC:85:F2:B1:65:96:BA:E7:3B:8E",
+      "roles": [
+        "metadata"
+      ]
+    },
+    {
+      "clientID": "datim-global",
+      "name": "datim-global",
+      "certFingerprint": "A6:43:D1:21:A1:07:13:2E:97:05:1B:94:E1:34:03:55:9B:DD:74:FE",
       "roles": [
         "metadata"
       ]
@@ -38,30 +46,37 @@
   ],
   "Channels": [
     {
-      "description": "Forwards request to the Node ILR",
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "Node ILR",
-      "pollingSchedule": null,
       "requestBody": true,
-      "responseBody": false,
+      "pollingSchedule": null,
+      "name": "Node ILR",
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentRegex": null,
+      "matchContentJson": null,
+      "description": "Forwards request to the Node ILR",
+      "responseBody": true,
       "tcpHost": null,
       "tcpPort": null,
-      "urlPattern": "^/node/ilr/CSD($|/.*)",
+      "urlPattern": "^/node/ilr($|/.*)",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
       "rewriteUrlsConfig": [],
       "addAutoRewriteRules": true,
       "rewriteUrls": false,
       "status": "enabled",
       "alerts": [],
       "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "txViewAcl": [
+        "view"
+      ],
       "properties": [],
       "matchContentTypes": [],
       "routes": [
         {
+          "password": "",
           "name": "Node ILR",
           "secured": false,
           "host": "localhost",
@@ -70,7 +85,8 @@
           "pathTransform": "s/node\\/ilr\\///",
           "primary": true,
           "username": "",
-          "password": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
           "type": "http"
         }
       ],
@@ -82,18 +98,125 @@
       "type": "http"
     },
     {
-      "description": "Allow access to global metadata via CSD",
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "Global ILR",
-      "pollingSchedule": null,
       "requestBody": true,
-      "responseBody": false,
+      "pollingSchedule": null,
+      "name": "Global ILR",
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentRegex": null,
+      "matchContentJson": null,
+      "description": "Allow access to global metadata via CSD",
+      "responseBody": true,
       "tcpHost": null,
       "tcpPort": null,
       "urlPattern": "^/global/ilr/CSD($|/.*)",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
+      "rewriteUrlsConfig": [],
+      "addAutoRewriteRules": true,
+      "rewriteUrls": false,
+      "status": "enabled",
+      "alerts": [],
+      "txRerunAcl": [],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "txViewAcl": [
+        "view"
+      ],
+      "properties": [],
+      "matchContentTypes": [],
+      "routes": [
+        {
+          "password": "test",
+          "name": "CSD",
+          "cert": null,
+          "username": "datim-node-demo",
+          "primary": true,
+          "pathTransform": "",
+          "path": "",
+          "port": 5000,
+          "host": "{{ global_openhim_hostname }}",
+          "secured": true,
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "authType": "private",
+      "whitelist": [],
+      "allow": [
+        "metadata",
+        "adx-adaptor"
+      ],
+      "type": "http"
+    },
+    {
+      "responseBody": true,
+      "requestBody": true,
+      "pollingSchedule": "0 4 * * *",
+      "name": "AUTO Update Node ILR Facts-Info document from Global",
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentRegex": null,
+      "matchContentJson": null,
+      "tcpHost": null,
+      "tcpPort": null,
+      "urlPattern": "^/datim-global$",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
+      "rewriteUrlsConfig": [],
+      "addAutoRewriteRules": true,
+      "rewriteUrls": false,
+      "status": "enabled",
+      "alerts": [],
+      "txRerunAcl": [],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "txViewAcl": [
+        "view"
+      ],
+      "properties": [],
+      "matchContentTypes": [],
+      "routes": [
+        {
+          "secured": true,
+          "host": "localhost",
+          "port": 5000,
+          "path": "/node/ilr/CSD/pollService/directory/DATIM-FactsInfo/update_cache",
+          "pathTransform": "",
+          "primary": true,
+          "username": "openinfoman",
+          "password": "test",
+          "name": "Update FactsInfo doc",
+          "cert": null,
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "authType": "private",
+      "whitelist": [],
+      "allow": [
+        "openinfoman"
+      ],
+      "type": "polling"
+    },
+    {
+      "responseBody": true,
+      "requestBody": true,
+      "pollingSchedule": "30 4 * * *",
+      "name": "AUTO Update mech in DHIS2 via mech importer",
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentRegex": null,
+      "matchContentJson": null,
+      "tcpHost": null,
+      "tcpPort": null,
+      "urlPattern": "^/mechanisms$",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
       "rewriteUrlsConfig": [],
       "addAutoRewriteRules": true,
       "rewriteUrls": false,
@@ -106,136 +229,7 @@
       "matchContentTypes": [],
       "routes": [
         {
-          "cert": null,
-          "username": "datim-node-demo",
-          "primary": true,
-          "pathTransform": "",
-          "path": "",
-          "port": 5000,
-          "host": "test2-global-ohie.datim.org",
-          "secured": true,
-          "name": "CSD",
-          "password": "test",
-          "type": "http"
-        }
-      ],
-      "authType": "private",
-      "whitelist": [],
-      "allow": [
-        "metadata"
-      ],
-      "type": "http"
-    },
-    {
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "AUTO Update Node ILR Facts-Info document from Global",
-      "pollingSchedule": "0 4 * * *",
-      "requestBody": true,
-      "responseBody": true,
-      "tcpHost": null,
-      "tcpPort": null,
-      "urlPattern": "^/datim-global$",
-      "rewriteUrlsConfig": [],
-      "addAutoRewriteRules": true,
-      "rewriteUrls": false,
-      "status": "disabled",
-      "alerts": [],
-      "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
-      "properties": [],
-      "matchContentTypes": [],
-      "routes": [
-        {
           "password": "",
-          "username": "",
-          "primary": true,
-          "pathTransform": "",
-          "path": "/CSD/pollService/directory/DATIM-FactsInfo/update_cache",
-          "port": 8984,
-          "host": "localhost",
-          "secured": false,
-          "name": "Update FactsInfo doc",
-          "type": "http"
-        }
-      ],
-      "authType": "private",
-      "whitelist": [],
-      "allow": [
-        "openinfoman"
-      ],
-      "type": "polling"
-    },
-    {
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "AUTO Update Node ILR OU-Extract document from Global",
-      "pollingSchedule": "0 6 * * *",
-      "requestBody": true,
-      "responseBody": true,
-      "tcpHost": null,
-      "tcpPort": null,
-      "urlPattern": "^/datim-global$",
-      "rewriteUrlsConfig": [],
-      "addAutoRewriteRules": true,
-      "rewriteUrls": false,
-      "status": "disabled",
-      "alerts": [],
-      "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
-      "properties": [],
-      "matchContentTypes": [],
-      "routes": [
-        {
-          "password": "",
-          "username": "",
-          "primary": true,
-          "pathTransform": "",
-          "path": "/CSD/pollService/directory/OU-Extract/update_cache",
-          "port": 8984,
-          "host": "localhost",
-          "secured": false,
-          "name": "Update DATIM global doc",
-          "type": "http"
-        }
-      ],
-      "authType": "private",
-      "whitelist": [],
-      "allow": [
-        "openinfoman"
-      ],
-      "type": "polling"
-    },
-    {
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "AUTO Update mech in DHIS2 via mech importer",
-      "pollingSchedule": "30 4 * * *",
-      "requestBody": true,
-      "responseBody": true,
-      "tcpHost": null,
-      "tcpPort": null,
-      "urlPattern": "^/mechanisms$",
-      "rewriteUrlsConfig": [],
-      "addAutoRewriteRules": true,
-      "rewriteUrls": false,
-      "status": "disabled",
-      "alerts": [],
-      "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
-      "properties": [],
-      "matchContentTypes": [],
-      "routes": [
-        {
           "name": "Mechanisms update",
           "secured": false,
           "host": "localhost",
@@ -244,7 +238,8 @@
           "pathTransform": "",
           "primary": true,
           "username": "",
-          "password": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
           "type": "http"
         }
       ],
@@ -256,37 +251,45 @@
       "type": "polling"
     },
     {
-      "tcpHost": null,
-      "pollingSchedule": null,
-      "name": "ADX/DXF export channel",
-      "matchContentXpath": null,
-      "matchContentValue": null,
-      "matchContentRegex": null,
-      "matchContentJson": null,
       "description": "Exports ADX or DXF messages to DATIM global",
+      "matchContentJson": null,
+      "matchContentRegex": null,
+      "matchContentValue": null,
+      "matchContentXpath": null,
+      "name": "ADX/DXF export channel",
+      "pollingSchedule": null,
+      "tcpHost": null,
       "tcpPort": null,
       "urlPattern": "^/export.*$",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
       "rewriteUrlsConfig": [],
       "addAutoRewriteRules": true,
       "rewriteUrls": false,
       "status": "enabled",
       "alerts": [],
       "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "txViewAcl": [
+        "view"
+      ],
       "properties": [],
       "matchContentTypes": [],
       "routes": [
         {
-          "password": "",
-          "name": "File queue",
-          "secured": false,
-          "host": "localhost",
-          "port": 4002,
-          "path": "/datim",
-          "pathTransform": "",
           "primary": true,
+          "pathTransform": "",
+          "path": "/datim",
+          "port": 4002,
+          "host": "localhost",
+          "secured": false,
+          "name": "File queue",
+          "password": "",
           "username": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
           "type": "http"
         }
       ],
@@ -298,25 +301,31 @@
       "type": "http"
     },
     {
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "AUTO Trigger update of locally managed sites to global",
-      "pollingSchedule": "0 4 * * *",
-      "requestBody": true,
       "responseBody": true,
+      "requestBody": true,
+      "pollingSchedule": null,
+      "name": "AUTO Trigger update of locally managed sites to global",
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentRegex": null,
+      "matchContentJson": null,
       "tcpHost": null,
       "tcpPort": null,
       "urlPattern": "^/trigger-site-update-for-global$",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
       "rewriteUrlsConfig": [],
       "addAutoRewriteRules": true,
       "rewriteUrls": false,
-      "status": "disabled",
+      "status": "enabled",
       "alerts": [],
       "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "txViewAcl": [
+        "view"
+      ],
       "properties": [],
       "matchContentTypes": [],
       "routes": [
@@ -326,60 +335,21 @@
           "primary": true,
           "pathTransform": "",
           "path": "/trigger",
-          "port": 5012,
+          "port": 4002,
           "host": "localhost",
           "secured": false,
-          "name": "Trigger update mediator",
+          "name": "File queue",
+          "forwardAuthHeader": false,
+          "status": "enabled",
           "type": "http"
         }
       ],
       "authType": "private",
       "whitelist": [],
       "allow": [
-        "adx-adaptor"
+        "exporter"
       ],
-      "type": "polling"
-    },
-    {
-      "matchContentJson": null,
-      "matchContentRegex": null,
-      "matchContentValue": null,
-      "matchContentXpath": null,
-      "name": "AUTO Trigger Dataset Assignment",
-      "pollingSchedule": "0 0 * * *",
-      "requestBody": true,
-      "responseBody": true,
-      "tcpHost": null,
-      "tcpPort": null,
-      "urlPattern": "^/trigger-form-assignment$",
-      "rewriteUrlsConfig": [],
-      "addAutoRewriteRules": true,
-      "rewriteUrls": false,
-      "status": "disabled",
-      "alerts": [],
-      "txRerunAcl": [],
-      "txViewFullAcl": [],
-      "txViewAcl": [],
-      "properties": [],
-      "matchContentTypes": [],
-      "routes": [
-        {
-          "password": "",
-          "username": "",
-          "primary": true,
-          "pathTransform": "",
-          "path": "/trigger-form-assignment",
-          "port": 5013,
-          "host": "localhost",
-          "secured": false,
-          "name": "Trigger shell-script mediator",
-          "type": "http"
-        }
-      ],
-      "authType": "private",
-      "whitelist": [],
-      "allow": [],
-      "type": "polling"
+      "type": "http"
     }
   ]
 }

@@ -7,3 +7,10 @@ file_queue_mediator_branch_or_tag: master
 openhim_root_password: openhim-password
 openhim_mediator_password: mediators-password
 allow_self_signed: true
+global_openhim_hostname: test2-global-ohie.datim.org
+global_dhis2_username: system_ug_site
+global_dhis2_password: 123
+node_dhis2_hostname: uga.datim4u.org
+node_dhis2_username: system_ug_site
+node_dhis2_password: 123
+csd_site_document: UGOU-Managedls

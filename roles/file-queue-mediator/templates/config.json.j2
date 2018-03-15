@@ -1,5 +1,5 @@
 {
-  "port": 4003,
+  "port": 4002,
   "heartbeat": true,
   "host": "",
   "endpoints": [],
@@ -88,14 +88,24 @@
     "config": {
       "endpoints": [
         {
-          "name": "echoServer",
-          "path": "/test",
-          "url": "http://localhost:8000",
-          "paused": false,
-          "parallel": 2,
-          "updateTx": true,
+          "url": "http://localhost:3000/",
+          "path": "/datim",
+          "name": "datim",
           "forwardMetadata": true,
-          "disableAutoChannelManagement": false
+          "updateTx": true,
+          "parallel": 1,
+          "paused": false,
+          "disableAutoChannelManagement": true
+        },
+        {
+          "forwardMetadata": true,
+          "updateTx": true,
+          "parallel": 1,
+          "paused": false,
+          "url": "http://localhost:5012/",
+          "path": "/trigger",
+          "name": "site-sync",
+          "disableAutoChannelManagement": true
         }
       ]
     }
