@@ -1,8 +1,8 @@
 {
-  "urn": "urn:uuid:146c9090-6044-11e5-9d1f-218790ee18c9",
-  "version": "0.5.0",
+  "urn": "urn:mediator:openhim-mediator-datim-next-gen",
+  "version": "0.6.0",
   "name": "datim",
-  "description": "Forwards ADX messges and polls for import status then forwards the final response",
+  "description": "Forwards ADX messages and polls for import status then forwards the final response",
   "defaultChannelConfig": [
     {
       "name": "datim",
@@ -39,55 +39,82 @@
   ],
   "configDefs": [
     {
-      "displayName": "Upstream URL",
-      "description": "The URL to use when forwarding messages (you may supply basic auth details in the URL if nesseccary)",
-      "param": "upstreamURL",
-      "type": "string"
-    },
-    {
-      "displayName": "Upstream task polling URL",
-      "description": "The URL to use when request task updates (only used if async is true)",
-      "param": "upstreamTaskURL",
-      "type": "string"
-    },
-    {
-      "displayName": "Upstream task summaries URL",
-      "description": "The URL to use when requesting a task summary once a task has been marked as completed (only used if async is true)",
-      "param": "upstreamTaskSummariesURL",
-      "type": "string"
-    },
-    {
-      "displayName": "Upstream async",
-      "description": "Whether to send the async parameter when forwarding messages",
-      "param": "upstreamAsync",
-      "type": "bool"
-    },
-    {
-      "displayName": "Receiver URL",
-      "description": "The URL to use for the system that receivers the final response",
-      "param": "receiverURL",
-      "type": "string"
-    },
-    {
-      "displayName": "Task polling interval",
-      "description": "The interval in which to poll for import taks updates",
-      "param": "pollingInterval",
-      "type": "number"
-    },
-    {
-      "displayName": "Task polling max errors",
-      "description": "After this amount of error retrieving the task status we will give up polling",
-      "param": "maxStatusReqErrors",
-      "type": "number"
+      "param": "mapping",
+      "displayName": "Configurations Map",
+      "description": "A map of Source and Target Configurations for Syncing DHIS and ILR",
+      "type": "struct",
+      "array": true,
+      "template": [
+        {
+          "param": "clientID",
+          "displayName": "Client ID",
+          "description": "ID of the client that is making the request.",
+          "type": "string"
+        },
+        {
+          "displayName": "Upstream URL",
+          "description": "The URL to use when forwarding messages (you may supply basic auth details in the URL if nesseccary)",
+          "param": "upstreamURL",
+          "type": "string"
+        },
+        {
+          "displayName": "Upstream task polling URL",
+          "description": "The URL to use when request task updates (only used if async is true)",
+          "param": "upstreamTaskURL",
+          "type": "string"
+        },
+        {
+          "displayName": "Upstream task summaries URL",
+          "description": "The URL to use when requesting a task summary once a task has been marked as completed (only used if async is true)",
+          "param": "upstreamTaskSummariesURL",
+          "type": "string"
+        },
+        {
+          "displayName": "Upstream async",
+          "description": "Whether to send the async parameter when forwarding messages",
+          "param": "upstreamAsync",
+          "type": "bool"
+        },
+        {
+          "displayName": "Receiver URL",
+          "description": "The URL to use for the system that receivers the final response",
+          "param": "receiverURL",
+          "type": "string"
+        },
+        {
+          "displayName": "Task polling interval",
+          "description": "The interval in which to poll for import taks updates",
+          "param": "pollingInterval",
+          "type": "number"
+        },
+        {
+          "displayName": "Task polling max errors",
+          "description": "After this amount of error retrieving the task status we will give up polling",
+          "param": "maxStatusReqErrors",
+          "type": "number"
+        },
+        {
+          "displayName": "Instance ID",
+          "description": "ID of the instance of node dhis2 that is making the request.",
+          "param": "instanceID",
+          "type": "string"
+        }
+      ]
     }
   ],
   "config": {
-    "maxStatusReqErrors": 500,
-    "pollingInterval": 60000,
-    "receiverURL": "https://{{ node_dhis2_hostname }}/adxAdapter/updateStatus",
-    "upstreamAsync": true,
-    "upstreamTaskSummariesURL": "https://{{ global_openhim_hostname }}:5000/dhis2/api/system/taskSummaries/DATAVALUE_IMPORT",
-    "upstreamTaskURL": "https://{{ global_openhim_hostname }}:5000/dhis2/api/system/tasks/DATAVALUE_IMPORT",
-    "upstreamURL": "https://{{ global_openhim_hostname }}:5000/import"
+    "mapping": [
+      {
+        "clientID": "adx-adaptor",
+        "upstreamURL": "https://{{ global_openhim_hostname }}:5000/import",
+        "upstreamTaskURL": "https://{{ global_openhim_hostname }}:5000/dhis2/api/system/tasks/DATAVALUE_IMPORT",
+        "upstreamTaskSummariesURL": "https://{{ global_openhim_hostname }}:5000/dhis2/api/system/taskSummaries/DATAVALUE_IMPORT",
+        "upstreamAsync": true,
+        "receiverURL": "https://{{ node_dhis2_hostname }}/adxAdapter/updateStatus",
+        "pollingInterval": 60000,
+        "maxStatusReqErrors": 500,
+        "instanceID": "UG"
+      }
+    ]
   }
 }

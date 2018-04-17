@@ -29,10 +29,6 @@
     command: npm install chdir=/usr/share/openhim-mediator-sync
     tags: sync-mediator
 
-  - name: build sync mediator
-    command: npm run prepublish chdir=/usr/share/openhim-mediator-sync
-    tags: sync-mediator
-
   - name: add sync mediator service
     template: src=openhim-mediator-sync.service.j2 dest=/etc/systemd/system/openhim-mediator-sync.service
     tags: sync-mediator
