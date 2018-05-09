@@ -1,6 +1,6 @@
 # Ansible scripts for DATIM4U OpenHIM and mediator setup
 
-To configure the isntallation ensure that the `variables.yml` file is edited to reflect he environment you want to deploy to.
+To configure the installation ensure that the `variables.yml` file is edited to reflect he environment you want to deploy to. In particular make sure the `openhim_server_public_hostname` is set correctly to a public DNS address or IP address of the server you are installing to otherwise you will not be able to login to the OpenHIM-console.
 
 To execute the setup execute add the IP addresses that you wish to run this agaisnt to the inventory file, then:
 ```bash

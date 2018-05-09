@@ -16,6 +16,10 @@
       remote_src: yes
     tags: openhim
 
+  - name: configure openhim-console
+    template: src=openhim-console-conf.j2 dest=/usr/share/openhim-console/config/default.json
+    tags: openhim
+
   - name: add repo file for nginx
     template: src=nginx-repo.j2 dest=/etc/yum.repos.d/nginx.repo
     tags: openhim
