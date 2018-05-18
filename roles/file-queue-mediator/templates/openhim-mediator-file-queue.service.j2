@@ -8,7 +8,7 @@ Restart=always
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=file-queue-mediator
-Environment=NODE_ENV=production {{ 'NODE_TLS_REJECT_UNAUTHORIZED=0 ' if (allow_self_signed) else '' }}
+Environment=NODE_ENV=production {{ 'NODE_TLS_REJECT_UNAUTHORIZED=0 ' if (allow_self_signed == 'true') else '' }}
 
 [Install]
 WantedBy=multi-user.target

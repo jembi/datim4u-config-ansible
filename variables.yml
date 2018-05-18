@@ -1,5 +1,8 @@
 ---
 openhim_server_public_hostname: localhost
+watch_lets_encrypt_certs: 'true'
+smtp_access_key: abc
+smtp_secret_key: 123
 openhim_server_public_protocol: https
 openhim_core_version: v4.0.1
 openhim_console_version: v1.12.0
@@ -8,7 +11,7 @@ datim_mediator_branch_or_tag: master
 file_queue_mediator_branch_or_tag: master
 openhim_root_password: openhim-password
 openhim_mediator_password: mediators-password
-allow_self_signed: true
+allow_self_signed: 'true'
 global_openhim_hostname: test2-global-ohie.datim.org
 global_dhis2_username: system_ug_site
 global_dhis2_password: 123
