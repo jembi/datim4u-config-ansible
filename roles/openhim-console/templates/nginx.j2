@@ -1,4 +1,7 @@
-worker_processes  1;
+# the * allow this to be ignored if an ssl-files.conf file doesn't exist
+include  /etc/nginx/conf.d/ssl*.conf;
+
+worker_processes auto;
 
 events {
   worker_connections  1024;
@@ -10,6 +13,12 @@ http {
 
   server {
     listen 80;
+    root /usr/share/openhim-console;
+  }
+
+  server {
+    listen 443 ssl;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     root /usr/share/openhim-console;
   }
 }
