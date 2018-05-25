@@ -5,7 +5,5 @@
   roles:
     - openhim-core
     - openhim-console
-    - openhim-datim-node-config
-    - sync-mediator
-    - datim-mediator
-    - file-queue-mediator
+    - openhim-datim-global-config
+    - auth-map-mediator

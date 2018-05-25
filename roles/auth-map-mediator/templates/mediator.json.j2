@@ -1,0 +1,102 @@
+{
+  "urn": "urn:uuid:0dd39020-3c5e-11e6-aff4-9977a6a68512",
+  "version": "0.0.1",
+  "name": "openhim-mediator-basicauth-map",
+  "description": "Adds basic auth details that are looked up from a map of OpenHIM client IDs",
+  "defaultChannelConfig": [
+    {
+      "name": "openhim-mediator-basicauth-map",
+      "urlPattern": "^/add-basic-auth.*$",
+      "alerts": [],
+      "txRerunAcl": [],
+      "txViewFullAcl": [],
+      "txViewAcl": [],
+      "properties": [],
+      "matchContentTypes": [],
+      "routes": [
+        {
+          "name": "openhim-mediator-basicauth-map Route",
+          "host": "localhost",
+          "port": "50456",
+          "primary": true,
+          "type": "http"
+        }
+      ],
+      "allow": ["admin"],
+      "type": "http"
+    }
+  ],
+  "endpoints": [
+    {
+      "name": "openhim-mediator-basicauth-map Route",
+      "host": "localhost",
+      "path": "/",
+      "port": "50456",
+      "primary": true,
+      "type": "http"
+    }
+  ],
+  "configDefs": [
+    {
+      "displayName": "Upstream URL",
+      "description": "The URL to use when forwarding messages. This should not contain any path segments, these will becopied from the incoming request.",
+      "param": "upstreamURL",
+      "type": "string"
+    },
+    {
+      "param": "mapping",
+      "displayName": "Passwords Map",
+      "description": "A map of OpenHIM client IDs to basic auth usernames and passwords",
+      "type": "struct",
+      "array": true,
+      "template": [
+        {
+          "param": "clientID",
+          "displayName": "Client ID",
+          "description": "The client ID whose requests will have the following basic auth details added",
+          "type": "string"
+        },
+        {
+          "param": "instanceID",
+          "displayName": "Instance ID",
+          "description": "The instance ID (passed in as request parameter) within the same client whose requests will have the following basic auth details added (blank if none)",
+          "type": "string"
+        },
+        {
+          "param": "username",
+          "displayName": "Username",
+          "description": "The basic auth username to add for this clientID",
+          "type": "string"
+        }, {
+          "param": "password",
+          "displayName": "Password",
+          "description": "The basic auth password to add for this clientID",
+          "type": "password"
+        }
+      ]
+    }
+  ],
+  "config": {
+    "upstreamURL": "https://newrelease.datim.org",
+    "mapping": [
+      {
+        "clientID": "lsohiestack",
+        "instanceID": "UG",
+        "username": "system_ug_import",
+        "password": "SET_ME"
+      },
+      {
+        "clientID": "lsohiestack",
+        "instanceID": "KE",
+        "username": "XXXsystem_ke_import",
+        "password": "SET_ME"
+      },
+      {
+        "clientID": "lsohiestack",
+        "instanceID": "newrelease",
+        "username": "system_ug_import",
+        "password": "SET_ME"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+[Unit]
+Description=BasicAuth Map OpenHIM Mediator
+
+[Service]
+WorkingDirectory=/usr/share/openhim-mediator-basicauth-map
+ExecStart=/usr/bin/npm start
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=basicauth-map-mediator
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,42 @@
+  - name: download basicauth-map mediator
+    get_url:
+      url: https://github.com/jembi/openhim-mediator-basicauth-map/archive/{{ basicauth_map_mediator_branch_or_tag }}.tar.gz
+      dest: /tmp/basicauth-map-mediator.tar.gz
+      timeout: 60
+    tags: basicauth-map-mediator
+
+  - name: creates basicauth-map mediator directory
+    file: path=/usr/share/openhim-mediator-basicauth-map state=directory
+    tags: openhim
+
+  - name: unarchive basicauth-map mediator
+    unarchive:
+      src: /tmp/basicauth-map-mediator.tar.gz
+      dest: /usr/share/openhim-mediator-basicauth-map
+      extra_opts: --strip-components=1
+      remote_src: yes
+    tags: basicauth-map-mediator
+
+  - name: add basicauth-map mediator config
+    template: src=config.json.j2 dest=/usr/share/openhim-mediator-basicauth-map/config/config.json
+    tags: basicauth-map-mediator
+
+  - name: add basicauth-map mediator config
+    template: src=mediator.json.j2 dest=/usr/share/openhim-mediator-basicauth-map/config/mediator.json
+    tags: basicauth-map-mediator
+
+  - name: install basicauth-map mediator dependencies
+    command: npm install chdir=/usr/share/openhim-mediator-basicauth-map
+    tags: basicauth-map-mediator
+
+  - name: add basicauth-map mediator service
+    template: src=openhim-mediator-basicauth-map.service.j2 dest=/etc/systemd/system/openhim-mediator-basicauth-map.service
+    tags: basicauth-map-mediator
+
+  - name: read new service
+    command: systemctl daemon-reload
+    tags: basicauth-map-mediator
+
+  - name: run basicauth-map mediator
+    service: name=openhim-mediator-basicauth-map state=started enabled=yes
+    tags: basicauth-map-mediator
