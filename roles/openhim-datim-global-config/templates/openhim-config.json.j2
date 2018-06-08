@@ -13,5 +13,223 @@
     }
   ],
   "Clients": [],
-  "Channels": []
+  "Channels": [
+    {
+      "addAutoRewriteRules": true,
+      "alerts": [],
+      "allow": [
+        "submitter"
+      ],
+      "authType": "private",
+      "description": "Forward imported aggregate data to global HMIS",
+      "matchContentJson": null,
+      "matchContentRegex": null,
+      "matchContentTypes": [],
+      "matchContentValue": null,
+      "matchContentXpath": null,
+      "name": "ADX/DXF import",
+      "pollingSchedule": null,
+      "properties": [],
+      "requestBody": true,
+      "responseBody": true,
+      "rewriteUrls": false,
+      "rewriteUrlsConfig": [],
+      "routes": [
+        {
+          "cert": null,
+          "username": "",
+          "primary": true,
+          "pathTransform": "",
+          "path": "/api/dataValueSets",
+          "port": 50456,
+          "host": "localhost",
+          "secured": false,
+          "name": "openhim-mediator-basicauth-map Route",
+          "password": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "status": "enabled",
+      "tcpHost": null,
+      "tcpPort": null,
+      "txRerunAcl": [],
+      "txViewAcl": [
+        "viewer",
+        "admin"
+      ],
+      "txViewFullAcl": [
+        "viewer",
+        "admin"
+      ],
+      "type": "http",
+      "urlPattern": "^^/import$$",
+      "whitelist": [],
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false
+    },
+    {
+      "requestBody": true,
+      "responseBody": true,
+      "name": "DHIS API",
+      "urlPattern": "^/dhis2.*$",
+      "matchContentRegex": null,
+      "matchContentXpath": null,
+      "matchContentValue": null,
+      "matchContentJson": null,
+      "pollingSchedule": null,
+      "tcpHost": null,
+      "tcpPort": null,
+      "rewriteUrlsConfig": [],
+      "addAutoRewriteRules": true,
+      "rewriteUrls": false,
+      "status": "enabled",
+      "alerts": [],
+      "txRerunAcl": [],
+      "txViewFullAcl": [
+        "viewer"
+      ],
+      "txViewAcl": [
+        "view",
+        "viewer"
+      ],
+      "properties": [],
+      "matchContentTypes": [],
+      "routes": [
+        {
+          "name": "openhim-mediator-basicauth-map Route",
+          "secured": false,
+          "host": "localhost",
+          "port": 50456,
+          "path": "",
+          "pathTransform": "s/dhis2\\///",
+          "primary": true,
+          "username": "",
+          "password": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "authType": "private",
+      "whitelist": [],
+      "allow": [
+        "dhis2-api"
+      ],
+      "type": "http",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false
+    },
+    {
+      "addAutoRewriteRules": true,
+      "alerts": [],
+      "allow": [
+        "metadata-query"
+      ],
+      "authType": "private",
+      "description": "Forward CSD message to global infomanager",
+      "matchContentJson": null,
+      "matchContentRegex": null,
+      "matchContentTypes": [],
+      "matchContentValue": null,
+      "matchContentXpath": null,
+      "name": "Global ILR",
+      "pollingSchedule": null,
+      "properties": [],
+      "requestBody": true,
+      "responseBody": false,
+      "rewriteUrls": false,
+      "rewriteUrlsConfig": [],
+      "routes": [
+        {
+          "password": "",
+          "username": "",
+          "primary": true,
+          "pathTransform": "s/\\/global\\/ilr//g",
+          "path": "",
+          "port": 8984,
+          "host": "localhost",
+          "secured": false,
+          "name": "Global ILR",
+          "cert": null,
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "status": "enabled",
+      "tcpHost": null,
+      "tcpPort": null,
+      "txRerunAcl": [],
+      "txViewAcl": [
+        "view"
+      ],
+      "txViewFullAcl": [
+        "view"
+      ],
+      "type": "http",
+      "urlPattern": "^/global/ilr($|/.*)$",
+      "whitelist": [],
+      "autoRetryEnabled": false,
+      "autoRetryPeriodMinutes": 60
+    },
+    {
+      "description": "Forward CSD message to node infomanager",
+      "matchContentJson": null,
+      "matchContentRegex": null,
+      "matchContentValue": null,
+      "matchContentXpath": null,
+      "pollingSchedule": null,
+      "requestBody": true,
+      "responseBody": true,
+      "tcpHost": null,
+      "tcpPort": null,
+      "urlPattern": "^/lsohiestack/ilr/CSD($|/.*)",
+      "name": "lsohiestack",
+      "autoRetryPeriodMinutes": 60,
+      "autoRetryEnabled": false,
+      "rewriteUrlsConfig": [],
+      "addAutoRewriteRules": true,
+      "rewriteUrls": false,
+      "status": "enabled",
+      "alerts": [],
+      "txRerunAcl": [],
+      "txViewFullAcl": [
+        "viewer"
+      ],
+      "txViewAcl": [
+        "viewer"
+      ],
+      "properties": [],
+      "matchContentTypes": [],
+      "routes": [
+        {
+          "cert": null,
+          "name": "CSD",
+          "secured": true,
+          "host": "ls.datim4u.org",
+          "port": 5000,
+          "path": "",
+          "pathTransform": "s/lsohiestack/node/g",
+          "primary": true,
+          "username": "",
+          "password": "",
+          "forwardAuthHeader": false,
+          "status": "enabled",
+          "type": "http"
+        }
+      ],
+      "authType": "private",
+      "whitelist": [],
+      "allow": [
+        "datim-node",
+        "datim-global",
+        "metadata-query",
+        "dhis2-api",
+        "submitter"
+      ],
+      "type": "http"
+    }
+  ]
 }
