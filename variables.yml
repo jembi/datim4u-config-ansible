@@ -4,7 +4,7 @@ watch_lets_encrypt_certs: 'true'
 smtp_access_key: abc
 smtp_secret_key: 123
 openhim_server_public_protocol: https
-openhim_core_version: v4.0.1
+openhim_core_version: v4.0.4
 openhim_console_version: v1.12.0
 sync_mediator_branch_or_tag: master
 datim_mediator_branch_or_tag: master
