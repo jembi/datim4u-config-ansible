@@ -1,7 +1,8 @@
-# the * allow this to be ignored if an ssl-files.conf file doesn't exist
-include  /etc/nginx/conf.d/ssl*.conf;
+user  nginx;
+worker_processes  1;
 
-worker_processes auto;
+error_log  /var/log/nginx/error.log;
+pid        /var/run/nginx.pid;
 
 events {
   worker_connections  1024;
@@ -9,16 +10,89 @@ events {
 
 http {
   include mime.types;
-  sendfile on;
+  default_type  application/octet-stream;
 
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+  access_log  /var/log/nginx/access.log  main;
+
+  index  index.html index.htm;
+
+  # Include separate files in the main "http{}" configuration
+  include  conf.d/*.conf;
+
+  # Block IP-based requests and unknown hosts, and
+  # set the global 'listen' options under 'default_server'
+  # (Ref: http://serverfault.com/a/277667/51748)
   server {
-    listen 80;
+    listen  [::]:80   default_server  ipv6only=off;
+    listen  [::]:443  default_server  ipv6only=off ssl http2;
+    return  444;
+  }
+
+  # Redirect http to https
+  server {
+    listen  [::]:80;
+    server_name  {{ openhim_server_public_hostname }};
+
+    # Includes for the default hostname
+    include  default.d/*.conf;
+
+    # Includes for the default hostname under http
+    include  default.d/*-http.inc;
+
+    # OpenHIM
     root /usr/share/openhim-console;
+
   }
 
   server {
-    listen 443 ssl;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    root /usr/share/openhim-console;
+        listen [::]:443;
+
+        server_name  {{ openhim_server_public_hostname }};
+
+        # Includes for the default hostname
+        include  default.d/*.conf;
+
+        # Includes for the default hostname under https
+       # include  default.d/*-https.inc;
+
+        # https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options
+        #add_header  X-Frame-Options DENY;
+
+        # Enable Strict Transport Security (HSTS) for https; see '/etc/nginx/conf.d/map-sts.conf'
+        #add_header  Strict-Transport-Security $sts;
+
+        ## SSL config Options
+        # Replace the follwing two lines with the path to your ssl certificate and key
+        ssl_certificate          /etc/letsencrypt/live/{{ openhim_server_public_hostname }}/fullchain.pem;
+        ssl_certificate_key      /etc/letsencrypt/live/{{ openhim_server_public_hostname }}/privkey.pem;
+        ssl_trusted_certificate  /etc/letsencrypt/live/{{ openhim_server_public_hostname }}/chain.pem;
+         ssl_session_timeout 5m;
+#          ssl_session_cache shared:SSL:5m;
+
+
+        # ssl_protocols TLSv1.1 TLSv1.2;
+        # From https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28.29 2016-01-25
+#        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA;
+         ssl_prefer_server_ciphers on;
+
+    location / {
+               return 302 /iol$request_uri;
+       }
+    location /iol {
+                alias /usr/share/openhim-console;
+                try_files $uri $uri/ =404;
+        }
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        proxy_connect_timeout       21600;
+        proxy_send_timeout          21600;
+        proxy_read_timeout          21600;
+        send_timeout                21600;
+        proxy_redirect http:// $scheme://;
+
+        client_max_body_size 120m;
   }
 }
